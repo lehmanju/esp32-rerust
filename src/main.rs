@@ -14,16 +14,14 @@ use core::panic::PanicInfo;
 
 use esp32_hal::clock_control::{sleep, ClockControl};
 use esp32_hal::dport::Split;
+use esp32_hal::dprintln;
 use esp32_hal::serial::config::Config;
 use esp32_hal::serial::Serial;
-use esp32_hal::dprintln;
 use esp32_hal::target;
 
 #[cfg(feature = "external_ram")]
 use esp32_hal::alloc::EXTERNAL_ALLOCATOR;
-use esp32_hal::alloc::{
-    Allocator, DRAM_ALLOCATOR,
-};
+use esp32_hal::alloc::{Allocator, DRAM_ALLOCATOR};
 
 #[global_allocator]
 pub static GLOBAL_ALLOCATOR: Allocator = DRAM_ALLOCATOR;
@@ -102,8 +100,10 @@ fn main() -> ! {
         .push_back(generated::Input { var_0: Some(8u32) });
     prog.init();
     loop {
-        sink.borrow_mut().push_back(generated::Input {var_0: Some(2u32)});
-        sink.borrow_mut().push_back(generated::Input {var_0: Some(5u32)});
+        sink.borrow_mut()
+            .push_back(generated::Input { var_0: Some(2u32) });
+        sink.borrow_mut()
+            .push_back(generated::Input { var_0: Some(5u32) });
         prog.run();
         sleep(1.s());
         prog.run();
